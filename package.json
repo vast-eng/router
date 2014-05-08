@@ -19,7 +19,7 @@
   ],
   "dependencies": {
     "lodash": "~2.4.1",
-    "pipeline-router": "git+https://github.com/vast-engineering/pipeline-router.git”,
+    "pipeline-router": "git+https://github.com/vast-engineering/pipeline-router.git",
     "hammock": "~0.1.5",
     "substr-polyfill": "*"
   },
