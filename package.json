@@ -1,6 +1,6 @@
 {
   "name": "mixdown-router",
-  "version": "3.0.5",
+  "version": "3.0.7",
   "description": "Router for mixdown.js",
   "main": "index.js",
   "scripts": {
@@ -19,7 +19,7 @@
   ],
   "dependencies": {
     "lodash": "~2.4.1",
-    "pipeline-router": "~1.2.4",
+    "pipeline-router": "~1.2.5",
     "hammock": "~0.1.5",
     "substr-polyfill": "*"
   },
