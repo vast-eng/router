@@ -127,7 +127,7 @@ var Router = function(namespace) {
       // Chrome on iOS has custom history state implementation.
       // Instead of real history manipulation it sets window.location href.
       // No history events fired on history change.
-      self._hasPushState = !!(window.history && window.history.pushState && !(navigator.userAgent.search("CriOS")));
+      self._hasPushState = !!(window.history && window.history.pushState && (navigator.userAgent.indexOf("CriOS") === -1));
       self.root = window.location.pathname;
 
       // Build a URL string for navigating w/o hash or additional search params
