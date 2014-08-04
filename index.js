@@ -12,6 +12,7 @@ var EventEmitter = require('events').EventEmitter;
 require('substr-polyfill');
 
 if (typeof(global) === 'undefined') {
+  // jshint -W079
   var global = typeof(window) === 'undefined' ? {} : window;
 }
 
@@ -43,7 +44,6 @@ var Router = function(namespace) {
     Generator.constructor.call(instance, namespace);
     Generator.prototype.attach.call(this, options);
 
-    var self = this[namespace];
     var _clientRouter = null;
 
     // attach the server side component
@@ -127,7 +127,7 @@ var Router = function(namespace) {
       // Chrome on iOS has custom history state implementation.
       // Instead of real history manipulation it sets window.location href.
       // No history events fired on history change.
-      self._hasPushState = !!(window.history && window.history.pushState && (navigator.userAgent.indexOf("CriOS") === -1));
+      self._hasPushState = !!(window.history && window.history.pushState);
       self.root = window.location.pathname;
 
       // Build a URL string for navigating w/o hash or additional search params
@@ -195,15 +195,15 @@ var Router = function(namespace) {
         newUrl = app.plugins.router.url(route, params);
       }
       else {
-        var newUrl = url.parse(route);
+        newUrl = url.parse(route);
       }
 
       // Test if this href is going to be the same as the current.
       // If same, then return b/c there is no reason to re-route.
       if (self.initialized &&
           newUrl.pathname === loc.pathname &&
-          newUrl.search == loc.search &&
-          newUrl.hash == loc.hash
+          newUrl.search === loc.search &&
+          newUrl.hash === loc.hash
       ) {
         return null;
       }
@@ -246,7 +246,6 @@ var Router = function(namespace) {
 
       // fire callback once the handler has executed.  Note: javascript is async.  The handler might not be done when this callback is fired... but you already knew that!
       _clientRouter.once('end', function(err, results) {
-
         // these are here b/c EventEmitter.once() does not remove the event properly after it executes in
         // older browsers (specifically IE8)
         if (!self._hasPushState) {
@@ -254,12 +253,9 @@ var Router = function(namespace) {
           _clientRouter.removeAllListeners('end');
         }
 
-        typeof(callback) === 'function' ? callback(err, {
-          matched: results[0].matched,
-          res: res,
-          req: req
-        }) : null;
-
+        if (typeof(callback) === 'function') {
+          callback(err, { matched: results[0].matched, res: res, req: req });
+        }
       });
 
 
