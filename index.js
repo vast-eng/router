@@ -83,6 +83,9 @@ var Router = function(namespace) {
 
       // add routes
       _.each(self.routes, function(route, key) {
+
+    	var pageType =  key;
+
         // if a handler is specified, validate and bind it
         if (route.handler) {
           // if HTML history exists (we are in a browser) and the route is not set to be interpreted
@@ -107,6 +110,7 @@ var Router = function(namespace) {
                 timeout: route.timeout
               },
               route.formats,
+              pageType,
               _.bind(handlers.constructor.prototype._baseHandler, app, handler, route)
             );
           } else {
