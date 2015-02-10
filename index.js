@@ -1,3 +1,4 @@
+/*global window, document*/
 var _ = require('lodash');
 var plRouter = require('pipeline-router');
 var util = require('util');
@@ -102,11 +103,14 @@ var Router = function(namespace) {
           var handler = self.getHandler(route.handler);
 
           // if we found the handler on the router, then bind it.
-          if (typeof(handler) === 'function') {
+          if (typeof handler === 'function') {
             newRouter.use(
               route.method,
               route.path,
-              { timeout: route.timeout },
+              {
+                timeout: route.timeout,
+                params: route.params
+              },
               _.bind(handlers.constructor.prototype._baseHandler, app, handler, route)
             );
           }
