@@ -65,6 +65,7 @@ var Router = function(namespace) {
         newRouter.timeout = 0;
       } else if (options.timeout) {
         newRouter.timeout = options.timeout;
+        newRouter.timeoutResponseCode = options.timeoutResponseCode;
       }
 
       var addParam = function(param, key) {
@@ -84,7 +85,7 @@ var Router = function(namespace) {
       // add routes
       _.each(self.routes, function(route, key) {
 
-    	var pageType =  key;
+      var pageType =  key;
 
         // if a handler is specified, validate and bind it
         if (route.handler) {
@@ -107,7 +108,8 @@ var Router = function(namespace) {
             newRouter.use(
               route.method,
               route.path, {
-                timeout: route.timeout
+                timeout: route.timeout,
+                timeoutResponseCode: route.timeoutResponseCode ? route.timeoutResponseCode : null
               },
               route.formats,
               pageType,
