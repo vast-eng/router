@@ -300,6 +300,10 @@ Router.prototype._baseHandler = function() {
   httpContext.app = this;
   httpContext.route = route;
 
+  if (httpContext.app.plugins.metrics) {
+    httpContext.app.plugins.metrics.increment('http-traffic');
+  }
+
   handler.call(this, httpContext);
 };
 
