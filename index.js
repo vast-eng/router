@@ -313,7 +313,7 @@ Router.prototype._baseHandler = function() {
       var currentTime = new Date().getTime();
       setTimeout(function() {
         var newTime = new Date().getTime();
-        httpContext.app.plugins.metrics('eventLoopDelay-' + httpContext.route.handler, newTime - currentTime);
+        httpContext.app.plugins.metrics.timing('eventLoopDelay-' + httpContext.route.handler, newTime - currentTime);
       }, 0);
     }
   }
