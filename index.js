@@ -300,9 +300,24 @@ Router.prototype._baseHandler = function() {
   httpContext.app = this;
   httpContext.route = route;
 
+  // send http traffic (uncached) to Graphite to measure traffic:
   if (httpContext.app.plugins.metrics) {
     httpContext.app.plugins.metrics.increment('http-traffic');
   }
+
+  // try checking how busy event loop is, and log that info to Graphite:
+  if (httpContext.app.plugins.metrics && httpContext.route.handler) {
+
+    // let's trigger this in less than 5% cases (to prevent spending cpu for this test itself):
+    if ( parseInt(Math.random() * 20) < 1 ) {
+      var currentTime = new Date().getTime();
+      setTimeout(function() {
+        var newTime = new Date().getTime();
+        httpContext.app.plugins.metrics('eventLoopDelay-' + httpContext.route.handler, newTime - currentTime);
+      }, 0);
+    }
+  }
+
 
   handler.call(this, httpContext);
 };
